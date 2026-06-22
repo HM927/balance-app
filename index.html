@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>残高管理アプリ</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>残高管理アプリ</h1>
+
+        <section>
+            <h2>基本情報の設定</h2>
+
+            <div>
+                <label for="balanceInput">現在の残高</label>
+                <input id="balanceInput" type="number">
+            </div>
+
+            <div>
+                <label for="baseDateInput">基準日</label>
+                <input id="baseDateInput" type="date">
+            </div>
+
+            <button id="saveButton">保存</button>
+        </section>
+
+        <section>
+            <h2>保存した内容</h2>
+
+            <p>現在の残高：<span id="balanceDisplay">未設定</span></p>
+            <p>基準日：<span id="baseDateDisplay">未設定</span></p>
+        </section>
+
+        <script src="index.js"></script>
+    </body>
+</html>
