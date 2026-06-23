@@ -44,7 +44,7 @@ saveButton.addEventListener("click", () => {
     
     saveBaseInfo(baseInfo);
     showBaseInfo(baseInfo);
-})
+});
 
 const savedBaseInfo = loadBaseInfo();
 
