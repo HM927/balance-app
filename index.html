@@ -31,6 +31,40 @@
             <p>基準日：<span id="baseDateDisplay">未設定</span></p>
         </section>
 
+        <section>
+            <h2>収支の登録</h2>
+
+            <div>
+                <label for="transactionType">種別</label>
+                <select id="transactionType">
+                    <option value="income">収入</option>
+                    <option value="expense">支出</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="transactionDate">日付</label>
+                <input id="transactionDate" type="date">
+            </div>
+
+            <div>
+                <label for="transactionAmount">金額</label>
+                <input id="transactionAmount" type="number">
+            </div>
+
+            <div>
+                <label for="transactionMemo">メモ</label>
+                <input id="transactionMemo" type="text">
+            </div>
+
+            <button id="addTransactionButton">追加</button>
+        </section>
+
+        <section>
+            <h2>収支一覧</h2>
+            <ul id="transactionList"></ul>
+        </section>
+
         <script src="index.js"></script>
     </body>
 </html>
