@@ -4,6 +4,14 @@ const saveButton = document.getElementById("saveButton");
 const balanceDisplay = document.getElementById("balanceDisplay");
 const baseDateDisplay = document.getElementById("baseDateDisplay");
 
+// 収支情報
+const transactionType = document.getElementById("transactionType");
+const transactionDate = document.getElementById("transactionDate");
+const transactionAmount = document.getElementById("transactionAmount");
+const transactionMemo = document.getElementById("transactionMemo");
+const addTransactionButton = document.getElementById("addTransactionButton");
+const transactionList = document.getElementById("transactionList");
+
 function getBaseInfo() {
     return {
         balance: balanceInput.value,
@@ -12,8 +20,17 @@ function getBaseInfo() {
 }
 
 function saveBaseInfo(baseInfo) {
-    localStorage.setItem("balance", baseInfo.balance);
-    localStorage.setItem("baseDate", baseInfo.baseDate);
+    localStorage.setItem("baseInfo", JSON.stringify(baseInfo));
+}
+
+function loadBaseInfo() {
+    const baseInfo = localStorage.getItem("baseInfo");
+
+    if (baseInfo === null) {
+        return null;
+    }
+
+    return JSON.parse(baseInfo);
 }
 
 function showBaseInfo(baseInfo) {
@@ -21,18 +38,43 @@ function showBaseInfo(baseInfo) {
     baseDateDisplay.textContent = baseInfo.baseDate;
 }
 
-function loadBaseInfo() {
-    const balance = localStorage.getItem("balance");
-    const baseDate = localStorage.getItem("baseDate");
-
-    if (balance === null || baseDate === null) {
-        return null;
-    }
-
+// 収支情報
+function getTransaction() {
     return {
-            balance: balance,
-            baseDate: baseDate
+        id: Date.now(),
+        type: transactionType.value,
+        date: transactionDate.value,
+        amount: Number(transactionAmount.value),
+        memo: transactionMemo.value
     };
+}
+
+function saveTransactions(transactions) {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+}
+
+function loadTransactions() {
+    const transactions = localStorage.getItem("transactions");
+
+    if (transactions === null) {
+        return [];
+    }
+    
+    return JSON.parse(transactions);
+}
+
+function showTransactions(transactions) {
+    transactionList.innerHTML = "";
+
+    transactions.forEach((transaction) => {
+        const listItem = document.createElement("li");
+
+        const typeText = transaction.type === "income" ? "収入" : "支出";
+
+        listItem.textContent = `${transaction.date} ${typeText} ${transaction.amount}円 ${transaction.memo}`;
+
+        transactionList.appendChild(listItem);
+    });
 }
 
 saveButton.addEventListener("click", () => {
@@ -46,8 +88,30 @@ saveButton.addEventListener("click", () => {
     showBaseInfo(baseInfo);
 });
 
+addTransactionButton.addEventListener("click", () => {
+    const transaction = getTransaction();
+
+    if (transaction.date === "" || transaction.amount === 0 || transaction.memo === "") {
+        return;
+    }
+
+    const transactions = loadTransactions();
+
+    transactions.push(transaction);
+
+    saveTransactions(transactions);
+    showTransactions(transactions);
+});
+
 const savedBaseInfo = loadBaseInfo();
 
 if (savedBaseInfo !== null) {
     showBaseInfo(savedBaseInfo);
 }
+
+const savedTransactions = loadTransactions();
+
+showTransactions(savedTransactions);
+
+// 日にち順にする。
+// テーブル状にしたい。
