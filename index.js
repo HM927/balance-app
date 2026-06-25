@@ -67,14 +67,51 @@ function showTransactions(transactions) {
     transactionList.innerHTML = "";
 
     transactions.forEach((transaction) => {
-        const listItem = document.createElement("li");
-
-        const typeText = transaction.type === "income" ? "収入" : "支出";
-
-        listItem.textContent = `${transaction.date} ${typeText} ${transaction.amount}円 ${transaction.memo}`;
+        const listItem = createTransactionListItem(transaction);
 
         transactionList.appendChild(listItem);
     });
+}
+
+// 収支削除
+function deleteTransaction(id) {
+    const transactions = loadTransactions();
+
+    const filteredTransactions = transactions.filter((transaction) => {
+        return transaction.id !== id;
+    });
+
+    saveTransactions(filteredTransactions);
+    
+    return filteredTransactions;
+}
+
+function createDeleteButton(id) {
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "削除";
+
+    deleteButton.addEventListener("click", () => {
+        const transactions = deleteTransaction(id);
+        showTransactions(transactions);
+    });
+
+    return deleteButton;
+}
+
+function createTransactionListItem(transaction) {
+    const listItem = document.createElement("li");
+
+    const typeText = transaction.type === "income" ? "収入" : "支出";
+
+    const transactionText = document.createElement("span");
+    transactionText.textContent = `${transaction.date} ${typeText} ${transaction.amount}円 ${transaction.memo}`;
+
+    const deleteButton = createDeleteButton(transaction.id);
+
+    listItem.appendChild(transactionText);
+    listItem.appendChild(deleteButton);
+
+    return listItem;
 }
 
 saveButton.addEventListener("click", () => {
@@ -103,6 +140,7 @@ addTransactionButton.addEventListener("click", () => {
     showTransactions(transactions);
 });
 
+
 const savedBaseInfo = loadBaseInfo();
 
 if (savedBaseInfo !== null) {
@@ -112,6 +150,3 @@ if (savedBaseInfo !== null) {
 const savedTransactions = loadTransactions();
 
 showTransactions(savedTransactions);
-
-// 日にち順にする。
-// テーブル状にしたい。
