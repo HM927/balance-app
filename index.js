@@ -12,6 +12,11 @@ const transactionMemo = document.getElementById("transactionMemo");
 const addTransactionButton = document.getElementById("addTransactionButton");
 const transactionList = document.getElementById("transactionList");
 
+// 残高計算
+const targetDateInput = document.getElementById("targetDateInput");
+const calculateBalanceButton = document.getElementById("calculateBalanceButton");
+const calculatedBalanceDisplay = document.getElementById("calculatedBalanceDisplay");
+
 function getBaseInfo() {
     return {
         balance: balanceInput.value,
@@ -66,7 +71,9 @@ function loadTransactions() {
 function showTransactions(transactions) {
     transactionList.innerHTML = "";
 
-    transactions.forEach((transaction) => {
+    const sortedTransactions = sortTransactionsByDate(transactions);
+
+    sortedTransactions.forEach((transaction) => {
         const listItem = createTransactionListItem(transaction);
 
         transactionList.appendChild(listItem);
@@ -114,6 +121,36 @@ function createTransactionListItem(transaction) {
     return listItem;
 }
 
+function sortTransactionsByDate(transactions) {
+    return [...transactions].sort((a, b) => {
+        return a.date.localeCompare(b.date);
+    });
+}
+
+function calculateBalance(baseInfo, transactions, targetDate) {
+    let balance = Number(baseInfo.balance);
+
+    transactions.forEach((transaction) => {
+        if (transaction.date < baseInfo.baseDate || targetDate < transaction.date) {
+            return;
+        }
+
+        if (transaction.type === "income") {
+            balance += transaction.amount;
+        }
+
+        if (transaction.type === "expense") {
+            balance -= transaction.amount;
+        }
+    });
+
+    return balance;
+}
+
+function showCalculatedBalance(balance) {
+    calculatedBalanceDisplay.textContent = `${balance}円`;
+}
+
 saveButton.addEventListener("click", () => {
     const baseInfo = getBaseInfo();
 
@@ -138,6 +175,20 @@ addTransactionButton.addEventListener("click", () => {
 
     saveTransactions(transactions);
     showTransactions(transactions);
+});
+
+calculateBalanceButton.addEventListener("click", () => {
+    const baseInfo = loadBaseInfo();
+    const transactions = loadTransactions();
+    const targetDate = targetDateInput.value;
+
+    if (baseInfo === null || targetDate === "") {
+        return;
+    }
+
+    const balance = calculateBalance(baseInfo, transactions, targetDate);
+
+    showCalculatedBalance(balance);
 });
 
 
