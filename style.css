@@ -1,43 +1,330 @@
+:root {
+  --primary: #4f68e8;
+  --primary-dark: #3e55ce;
+  --income: #159864;
+  --expense: #df4b55;
+  --background: #f4f6fa;
+  --card: #ffffff;
+  --text: #1f2937;
+  --subtext: #6b7280;
+  --border: #e3e7ef;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: sans-serif;
-  margin: 40px;
-  background-color: #f5f5f5;
-  color: #333;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-areas:
+    "title title"
+    "balance balance"
+    "settings form"
+    "calculator form"
+    "list list";
+  gap: 20px;
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 32px 0 48px;
+  background: var(--background);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  line-height: 1.6;
 }
 
-h1 {
-  margin-bottom: 24px;
+html {
+  min-height: 100%;
+  background: var(--background);
 }
 
-section {
-  background-color: #ffffff;
+.app-title {
+  grid-area: title;
+  margin: 0 0 4px;
+  color: #24314f;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  letter-spacing: 0.02em;
+}
+
+.app-title::before {
+  display: inline-block;
+  width: 10px;
+  height: 30px;
+  margin-right: 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  content: "";
+  vertical-align: -4px;
+}
+
+.card {
+  min-width: 0;
   padding: 24px;
-  margin-bottom: 24px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: 0 4px 16px rgba(31, 41, 55, 0.05);
 }
 
-div {
+.card h2 {
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.1rem;
+}
+
+.settings-card {
+  grid-area: settings;
+}
+
+.balance-card {
+  grid-area: balance;
+  padding: 28px;
+  text-align: center;
+}
+
+.balance-card h2 {
+  margin-bottom: 8px;
+  padding: 0;
+  border: 0;
+  color: var(--subtext);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.calculator-card {
+  grid-area: calculator;
+}
+
+.transaction-form-card {
+  grid-area: form;
+}
+
+.transaction-list-card {
+  grid-area: list;
+}
+
+.card > div {
   margin-bottom: 16px;
 }
 
 label {
   display: block;
   margin-bottom: 6px;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-input {
-  width: 240px;
-  padding: 8px;
-  font-size: 16px;
+input,
+select,
+button {
+  min-height: 44px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #d6dce7;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 104, 232, 0.14);
 }
 
 button {
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
   cursor: pointer;
 }
 
+.card > button {
+  width: 100%;
+}
+
 button:hover {
-  background-color: #e0e0e0;
+  background: var(--primary-dark);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(79, 104, 232, 0.28);
+  outline-offset: 2px;
+}
+
+.balance-value {
+  margin: 0;
+  color: var(--primary);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.balance-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.base-date {
+  margin: 10px 0 0;
+  color: var(--subtext);
+  font-size: 0.88rem;
+}
+
+.calculated-balance {
+  margin: 20px 0 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: #f2f5ff;
+  color: var(--subtext);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+#calculatedBalanceDisplay {
+  display: block;
+  color: var(--primary);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+#transactionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#transactionList:empty::before {
+  display: block;
+  padding: 32px 16px;
+  border: 1px dashed #d5dbe7;
+  border-radius: 8px;
+  color: var(--subtext);
+  content: "収支はまだ登録されていません";
+  text-align: center;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.transaction-item:last-child {
+  border-bottom: 0;
+}
+
+.transaction-details {
+  display: grid;
+  grid-template-columns: 120px 64px 110px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.transaction-date,
+.transaction-memo {
+  color: var(--subtext);
+}
+
+.transaction-memo {
+  overflow-wrap: anywhere;
+}
+
+.transaction-type,
+.transaction-amount {
+  font-weight: 700;
+}
+
+.income .transaction-type,
+.income .transaction-amount {
+  color: var(--income);
+}
+
+.expense .transaction-type,
+.expense .transaction-amount {
+  color: var(--expense);
+}
+
+.delete-button {
+  min-height: 36px;
+  padding: 6px 12px;
+  border-color: #f3c7ca;
+  background: #fff5f5;
+  color: var(--expense);
+  font-size: 0.85rem;
+}
+
+.delete-button:hover {
+  border-color: #e9a9ae;
+  background: #fee7e8;
+}
+
+@media (max-width: 720px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "balance"
+      "settings"
+      "form"
+      "calculator"
+      "list";
+    gap: 14px;
+    width: min(100% - 24px, 560px);
+    padding: 20px 0 32px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .balance-card {
+    padding: 24px 20px;
+  }
+
+  .transaction-item {
+    align-items: flex-end;
+  }
+
+  .transaction-details {
+    grid-template-columns: 1fr auto;
+    gap: 4px 12px;
+  }
+
+  .transaction-amount {
+    text-align: right;
+  }
+
+  .transaction-memo {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .transaction-item {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .delete-button {
+    align-self: flex-end;
+  }
 }
