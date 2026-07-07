@@ -96,6 +96,7 @@ function deleteTransaction(id) {
 function createDeleteButton(id) {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "削除";
+    deleteButton.classList.add("delete-button");
 
     deleteButton.addEventListener("click", () => {
         const transactions = deleteTransaction(id);
@@ -107,11 +108,33 @@ function createDeleteButton(id) {
 
 function createTransactionListItem(transaction) {
     const listItem = document.createElement("li");
+    listItem.classList.add("transaction-item", transaction.type);
 
     const typeText = transaction.type === "income" ? "収入" : "支出";
 
     const transactionText = document.createElement("span");
-    transactionText.textContent = `${transaction.date} ${typeText} ${transaction.amount}円 ${transaction.memo}`;
+    transactionText.classList.add("transaction-details");
+
+    const dateText = document.createElement("span");
+    dateText.classList.add("transaction-date");
+    dateText.textContent = transaction.date;
+
+    const typeLabel = document.createElement("span");
+    typeLabel.classList.add("transaction-type");
+    typeLabel.textContent = typeText;
+
+    const amountText = document.createElement("span");
+    amountText.classList.add("transaction-amount");
+    amountText.textContent = `${transaction.amount}円`;
+
+    const memoText = document.createElement("span");
+    memoText.classList.add("transaction-memo");
+    memoText.textContent = transaction.memo;
+
+    transactionText.appendChild(dateText);
+    transactionText.appendChild(typeLabel);
+    transactionText.appendChild(amountText);
+    transactionText.appendChild(memoText);
 
     const deleteButton = createDeleteButton(transaction.id);
 

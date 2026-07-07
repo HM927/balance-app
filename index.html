@@ -2,13 +2,14 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>残高管理アプリ</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <h1>残高管理アプリ</h1>
+        <h1 class="app-title">残高管理アプリ</h1>
 
-        <section>
+        <section class="card settings-card">
             <h2>基本情報の設定</h2>
 
             <div>
@@ -24,14 +25,14 @@
             <button id="saveButton">保存</button>
         </section>
 
-        <section>
+        <section class="card balance-card">
             <h2>保存した内容</h2>
 
-            <p>現在の残高：<span id="balanceDisplay">未設定</span></p>
-            <p>基準日：<span id="baseDateDisplay">未設定</span></p>
+            <p class="balance-value"><span class="balance-label">現在の残高</span><span id="balanceDisplay">未設定</span></p>
+            <p class="base-date">基準日：<span id="baseDateDisplay">未設定</span></p>
         </section>
 
-        <section>
+        <section class="card calculator-card">
             <h2>指定日残高の計算</h2>
 
             <div>
@@ -41,10 +42,10 @@
 
             <button id="calculateBalanceButton">計算</button>
 
-            <p>指定日時点の残高：<span id="calculatedBalanceDisplay">未設定</span></p>
+            <p class="calculated-balance">指定日時点の残高：<span id="calculatedBalanceDisplay">未設定</span></p>
         </section>
 
-        <section>
+        <section class="card transaction-form-card">
             <h2>収支の登録</h2>
 
             <div>
@@ -73,7 +74,7 @@
             <button id="addTransactionButton">追加</button>
         </section>
 
-        <section>
+        <section class="card transaction-list-card">
             <h2>収支一覧</h2>
             <ul id="transactionList"></ul>
         </section>
