@@ -1,3 +1,7 @@
+import {calculateBalance} from "./balance.js";
+import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "./storage.js";
+import {sortTransactionsByDate, deleteTransaction} from "./transactions.js";
+
 const balanceInput = document.getElementById("balanceInput");
 const baseDateInput = document.getElementById("baseDateInput");
 const saveButton = document.getElementById("saveButton");
@@ -24,20 +28,6 @@ function getBaseInfo() {
     };
 }
 
-function saveBaseInfo(baseInfo) {
-    localStorage.setItem("baseInfo", JSON.stringify(baseInfo));
-}
-
-function loadBaseInfo() {
-    const baseInfo = localStorage.getItem("baseInfo");
-
-    if (baseInfo === null) {
-        return null;
-    }
-
-    return JSON.parse(baseInfo);
-}
-
 function showBaseInfo(baseInfo) {
     balanceDisplay.textContent = baseInfo.balance;
     baseDateDisplay.textContent = baseInfo.baseDate;
@@ -54,20 +44,6 @@ function getTransaction() {
     };
 }
 
-function saveTransactions(transactions) {
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-}
-
-function loadTransactions() {
-    const transactions = localStorage.getItem("transactions");
-
-    if (transactions === null) {
-        return [];
-    }
-    
-    return JSON.parse(transactions);
-}
-
 function showTransactions(transactions) {
     transactionList.innerHTML = "";
 
@@ -78,19 +54,6 @@ function showTransactions(transactions) {
 
         transactionList.appendChild(listItem);
     });
-}
-
-// 収支削除
-function deleteTransaction(id) {
-    const transactions = loadTransactions();
-
-    const filteredTransactions = transactions.filter((transaction) => {
-        return transaction.id !== id;
-    });
-
-    saveTransactions(filteredTransactions);
-    
-    return filteredTransactions;
 }
 
 function createDeleteButton(id) {
@@ -142,32 +105,6 @@ function createTransactionListItem(transaction) {
     listItem.appendChild(deleteButton);
 
     return listItem;
-}
-
-function sortTransactionsByDate(transactions) {
-    return [...transactions].sort((a, b) => {
-        return a.date.localeCompare(b.date);
-    });
-}
-
-function calculateBalance(baseInfo, transactions, targetDate) {
-    let balance = Number(baseInfo.balance);
-
-    transactions.forEach((transaction) => {
-        if (transaction.date < baseInfo.baseDate || targetDate < transaction.date) {
-            return;
-        }
-
-        if (transaction.type === "income") {
-            balance += transaction.amount;
-        }
-
-        if (transaction.type === "expense") {
-            balance -= transaction.amount;
-        }
-    });
-
-    return balance;
 }
 
 function showCalculatedBalance(balance) {
