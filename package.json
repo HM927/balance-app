@@ -1,0 +1,27 @@
+{
+  "name": "balance-app",
+  "version": "1.0.0",
+  "description": "基準日時点の残高と、その後の収入・支出を登録し、指定日時点の残高を確認できるアプリです。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HM927/balance-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/HM927/balance-app/issues"
+  },
+  "homepage": "https://github.com/HM927/balance-app#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6"
+  }
+}

@@ -1,6 +1,6 @@
 import {calculateBalance} from "./balance.js";
-import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "./storage.js";
-import {sortTransactionsByDate, deleteTransaction} from "./transactions.js";
+import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "../../storage.js";
+import {sortTransactionsByDate, deleteTransaction} from "../../transactions.js";
 
 const balanceInput = document.getElementById("balanceInput");
 const baseDateInput = document.getElementById("baseDateInput");
