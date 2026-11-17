@@ -35,8 +35,45 @@ h3 { font-size: 1.05rem; margin-bottom: 20px; }
 .eyebrow { margin-bottom: 6px; font-size: .7rem; font-weight: 700; letter-spacing: .14em; color: var(--primary); }
 .calendar-layout { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr); align-items: start; gap: 24px; }
 .selected-day-panel { display: grid; gap: 20px; }
+/* 右側の残高と一覧を、カレンダーの高さの中に収める。 */
+.calendar-layout > .selected-day-panel {
+  align-self: stretch;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  contain: size;
+}
+.selected-day-panel > .transaction-list-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.selected-day-panel .card-heading { flex-shrink: 0; }
+.selected-day-panel .transaction-list {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
 .management-layout { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); align-items: start; gap: 24px; }
-.settings-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; gap: 24px; max-width: 900px; }
+.management-layout > .transaction-list-card {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  contain: size;
+  overflow: hidden;
+}
+.management-layout .card-heading { flex-shrink: 0; }
+.management-layout .transaction-list {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+.settings-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: stretch; gap: 24px; }
 .card { min-width: 0; padding: 26px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 5px 24px #24314f04; }
 .calendar-card { padding: 24px 20px; }
 .calculator-card { background: #edf1ff; border-color: #dce3ff; }
@@ -45,6 +82,37 @@ h3 { font-size: 1.05rem; margin-bottom: 20px; }
 .calculated-balance, .balance-value { margin: 0 0 14px; color: var(--text); font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1.4; overflow-wrap: anywhere; }
 .helper-text { color: var(--subtext); font-size: .8rem; line-height: 1.8; margin-bottom: 0; }
 .base-date { color: var(--subtext); font-size: .9rem; padding-bottom: 20px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.settings-layout > .card { padding: 32px; }
+.settings-layout .settings-card { display: flex; flex-direction: column; }
+.settings-layout .settings-card h3 { margin-bottom: 10px; }
+.settings-layout .form-fields { gap: 22px; margin-block: 28px; }
+.settings-layout .primary-button { margin-top: auto; }
+.settings-layout .balance-card {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #edf1ff, #f8faff);
+  border-color: #dce3ff;
+}
+.settings-layout .balance-card h3 { margin-bottom: 28px; }
+.settings-layout .balance-caption { margin-bottom: 10px; }
+.settings-layout .balance-value {
+  margin-bottom: 32px;
+  color: var(--primary-dark);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  letter-spacing: -.025em;
+}
+.settings-layout .base-date {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: auto 0 0;
+  padding: 20px 0 0;
+  border: 0;
+  border-top: 1px solid #dce3ff;
+}
+.settings-layout #baseDateDisplay { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
 .text-button { margin-top: 12px; padding: 0; background: transparent; border: 0; color: var(--primary-dark); font-weight: 600; font-size: .85rem; text-align: left; }
 .text-button:hover { text-decoration: underline; }
 .form-fields { display: grid; gap: 18px; margin: 24px 0; }
@@ -88,7 +156,17 @@ input::placeholder { color: #929caf; }
   .page-heading { margin: 24px 0 18px; }
   .calendar-layout, .management-layout, .settings-layout { grid-template-columns: 1fr; gap: 18px; }
   .selected-day-panel { gap: 18px; }
+  .calendar-layout > .selected-day-panel {
+    contain: none;
+    grid-template-rows: auto auto;
+  }
+  .selected-day-panel .transaction-list { flex: none; max-height: 240px; }
+  .management-layout > .transaction-list-card { contain: none; }
+  .management-layout .transaction-list { flex: none; max-height: 400px; }
   .card { padding: 22px; border-radius: 16px; }
+  .settings-layout > .card { padding: 24px; }
+  .settings-layout .balance-card h3 { margin-bottom: 22px; }
+  .settings-layout .balance-value { margin-bottom: 26px; font-size: 2.25rem; }
   .calendar-card { padding: 16px 10px; }
   .calculator-card h3 { margin-bottom: 16px; }
   .calculated-balance { font-size: 2rem; }

@@ -10,7 +10,8 @@ import 'fullcalendar/themes/monarch/palettes/purple.css'; // YOUR THEME'S PALETT
 
 import { calculateBalance } from './balance.js';
 import { loadBaseInfo, loadTransactions } from './storage';
-import { showCalculatedBalance } from './view.js';
+import { showCalculatedBalance, showSelectedTransactions } from './view.js';
+import { getTransactionsByDate } from './transactions.js';
 
 const calendarEl = document.getElementById('calendar');
 
@@ -48,6 +49,10 @@ const calendar = new Calendar(calendarEl, {
     );
 
     showCalculatedBalance(balance);
+
+    const selectedTransactions = getTransactionsByDate(transactions,info.dateStr);
+
+    showSelectedTransactions(selectedTransactions);
   }
 
 });

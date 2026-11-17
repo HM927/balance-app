@@ -1,6 +1,6 @@
-import {calculateBalance} from "./balance.js";
 import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "./storage.js";
 import {sortTransactionsByDate, deleteTransaction} from "./transactions.js";
+import { createTransactionListItem } from "./view.js";
 
 const balanceInput = document.getElementById("balanceInput");
 const baseDateInput = document.getElementById("baseDateInput");
@@ -45,7 +45,7 @@ function showTransactions(transactions) {
     const sortedTransactions = sortTransactionsByDate(transactions);
 
     sortedTransactions.forEach((transaction) => {
-        const listItem = createTransactionListItem(transaction);
+        const listItem = createDeletableTransactionListItem(transaction);
 
         transactionList.appendChild(listItem);
     });
@@ -64,39 +64,11 @@ function createDeleteButton(id) {
     return deleteButton;
 }
 
-function createTransactionListItem(transaction) {
-    const listItem = document.createElement("li");
-    listItem.classList.add("transaction-item", transaction.type);
-
-    const typeText = transaction.type === "income" ? "収入" : "支出";
-
-    const transactionText = document.createElement("span");
-    transactionText.classList.add("transaction-details");
-
-    const dateText = document.createElement("span");
-    dateText.classList.add("transaction-date");
-    dateText.textContent = transaction.date;
-
-    const typeLabel = document.createElement("span");
-    typeLabel.classList.add("transaction-type");
-    typeLabel.textContent = typeText;
-
-    const amountText = document.createElement("span");
-    amountText.classList.add("transaction-amount");
-    amountText.textContent = `${transaction.amount}円`;
-
-    const memoText = document.createElement("span");
-    memoText.classList.add("transaction-memo");
-    memoText.textContent = transaction.memo;
-
-    transactionText.appendChild(dateText);
-    transactionText.appendChild(typeLabel);
-    transactionText.appendChild(amountText);
-    transactionText.appendChild(memoText);
-
+function createDeletableTransactionListItem(transaction) {
+    const listItem = createTransactionListItem(transaction);
+    
     const deleteButton = createDeleteButton(transaction.id);
 
-    listItem.appendChild(transactionText);
     listItem.appendChild(deleteButton);
 
     return listItem;

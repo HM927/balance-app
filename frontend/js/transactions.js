@@ -18,3 +18,10 @@ export function deleteTransaction(id) {
     
     return filteredTransactions;
 }
+
+//日別収支
+export function getTransactionsByDate(transactions, targetDate) {
+    return transactions.filter(transaction => 
+        transaction.date === targetDate
+    );
+}
