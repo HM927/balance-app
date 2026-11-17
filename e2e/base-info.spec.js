@@ -1,7 +1,7 @@
 import {test, expect} from "@playwright/test";
 
 test("基準情報を保存・更新でき、再読み込み後も残る", async ({page}) => {
-    await page.goto("http://127.0.0.1:8000");
+    await page.goto("http://localhost:5173");
     
     await page.locator("#balanceInput").fill("10000");
     await page.locator("#baseDateInput").fill("2026-11-10");

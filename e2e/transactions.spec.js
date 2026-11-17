@@ -1,7 +1,11 @@
 import {test, expect} from "@playwright/test";
 
 test("複数保存でき、削除ができる", async ({page}) => {
-await page.goto("http://127.0.0.1:8000");
+await page.clock.install({
+    time: new Date("2026-11-15T12:00:00+09:00"),
+});
+
+await page.goto("http://localhost:5173");
 
 await page.locator("#balanceInput").fill("10000");
 await page.locator("#baseDateInput").fill("2026-11-10");
@@ -19,8 +23,9 @@ await page.locator("#transactionAmount").fill("2000");
 await page.locator("#transactionMemo").fill("食費");
 await page.locator("#addTransactionButton").click();
 
-await page.locator("#targetDateInput").fill("2026-11-12");
-await page.locator("#calculateBalanceButton").click();
+await page.locator(
+    '#calendar [data-date="2026-11-12"]'
+).click();
 await expect(page.locator("#calculatedBalanceDisplay")).toHaveText("11000円");
 
 const list = page.locator("#transactionList");
@@ -41,8 +46,9 @@ await expect(list.locator(".transaction-memo")).toHaveText(["給料", "食費"])
 
 await list.locator("li").first().locator(".delete-button").click();
 
-await page.locator("#targetDateInput").fill("2026-11-12");
-await page.locator("#calculateBalanceButton").click();
+await page.locator(
+    '#calendar [data-date="2026-11-12"]'
+).click();
 await expect(page.locator("#calculatedBalanceDisplay")).toHaveText("8000円");
 
 await expect(list.locator("li")).toHaveCount(1);
@@ -61,8 +67,9 @@ await expect(list.locator(".transaction-memo")).toHaveText(["食費"]);
 
 await list.locator("li").first().locator(".delete-button").click();
 
-await page.locator("#targetDateInput").fill("2026-11-12");
-await page.locator("#calculateBalanceButton").click();
+await page.locator(
+    '#calendar [data-date="2026-11-12"]'
+).click();
 await expect(page.locator("#calculatedBalanceDisplay")).toHaveText("10000円");
 
 await expect(list.locator("li")).toHaveCount(0);

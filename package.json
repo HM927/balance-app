@@ -22,6 +22,11 @@
   "homepage": "https://github.com/HM927/balance-app#readme",
   "devDependencies": {
     "@playwright/test": "^1.65.1",
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "vite": "^8.3.8"
+  },
+  "dependencies": {
+    "fullcalendar": "^7.1.5",
+    "temporal-polyfill": "^1.0.8"
   }
 }

@@ -1,6 +1,6 @@
 import {calculateBalance} from "./balance.js";
-import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "../../storage.js";
-import {sortTransactionsByDate, deleteTransaction} from "../../transactions.js";
+import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "./storage.js";
+import {sortTransactionsByDate, deleteTransaction} from "./transactions.js";
 
 const balanceInput = document.getElementById("balanceInput");
 const baseDateInput = document.getElementById("baseDateInput");
@@ -15,11 +15,6 @@ const transactionAmount = document.getElementById("transactionAmount");
 const transactionMemo = document.getElementById("transactionMemo");
 const addTransactionButton = document.getElementById("addTransactionButton");
 const transactionList = document.getElementById("transactionList");
-
-// 残高計算
-const targetDateInput = document.getElementById("targetDateInput");
-const calculateBalanceButton = document.getElementById("calculateBalanceButton");
-const calculatedBalanceDisplay = document.getElementById("calculatedBalanceDisplay");
 
 function getBaseInfo() {
     return {
@@ -107,10 +102,6 @@ function createTransactionListItem(transaction) {
     return listItem;
 }
 
-function showCalculatedBalance(balance) {
-    calculatedBalanceDisplay.textContent = `${balance}円`;
-}
-
 saveButton.addEventListener("click", () => {
     const baseInfo = getBaseInfo();
 
@@ -136,21 +127,6 @@ addTransactionButton.addEventListener("click", () => {
     saveTransactions(transactions);
     showTransactions(transactions);
 });
-
-calculateBalanceButton.addEventListener("click", () => {
-    const baseInfo = loadBaseInfo();
-    const transactions = loadTransactions();
-    const targetDate = targetDateInput.value;
-
-    if (baseInfo === null || targetDate === "") {
-        return;
-    }
-
-    const balance = calculateBalance(baseInfo, transactions, targetDate);
-
-    showCalculatedBalance(balance);
-});
-
 
 const savedBaseInfo = loadBaseInfo();
 

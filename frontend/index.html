@@ -7,7 +7,14 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <h1 class="app-title">残高管理アプリ</h1>
+        <h1>残高管理アプリ</h1>
+        
+        <section id="calender-page">
+            <h2>カレンダー</h2>
+            <div id='calendar'></div>
+        </section>
+
+        <script type="module" src="js/calendar.js"></script>
 
         <section class="card settings-card">
             <h2>基本情報の設定</h2>
@@ -34,14 +41,6 @@
 
         <section class="card calculator-card">
             <h2>指定日残高の計算</h2>
-
-            <div>
-                <label for="targetDateInput">残高確認日</label>
-                <input id="targetDateInput" type="date">
-            </div>
-
-            <button id="calculateBalanceButton">計算</button>
-
             <p class="calculated-balance">指定日時点の残高：<span id="calculatedBalanceDisplay">未設定</span></p>
         </section>
 
