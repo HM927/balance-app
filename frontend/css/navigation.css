@@ -1,0 +1,36 @@
+.bottom-nav {
+    position: fixed;
+    z-index: 20;
+    left: 50%;
+    bottom: max(18px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    display: flex;
+    width: min(440px, calc(100% - 32px));
+    padding: 7px;
+    gap: 6px;
+    background: #fffffff5;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 8px 36px #24314f14;
+}
+.bottom-nav button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 60px;
+    padding: 7px 8px;
+    background: transparent;
+    border: 0;
+    border-radius: 15px;
+    color: var(--subtext);
+    font-size: .7rem;
+    font-weight: 600;
+}
+.bottom-nav svg { width: 23px; height: 23px; }
+.bottom-nav button:hover { background: #f3f5fb; }
+body:has(#calendar-page:not([hidden])) .bottom-nav [data-page="calendar-page"],
+body:has(#transactions-page:not([hidden])) .bottom-nav [data-page="transactions-page"],
+body:has(#settings-page:not([hidden])) .bottom-nav [data-page="settings-page"] { color: var(--primary-dark); background: #edf1ff; }

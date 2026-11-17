@@ -1,83 +1,90 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>残高管理アプリ</title>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <h1>残高管理アプリ</h1>
-        
-        <section id="calender-page">
-            <h2>カレンダー</h2>
-            <div id='calendar'></div>
-        </section>
-
-        <script type="module" src="js/calendar.js"></script>
-
-        <section class="card settings-card">
-            <h2>基本情報の設定</h2>
-
-            <div>
-                <label for="balanceInput">現在の残高</label>
-                <input id="balanceInput" type="number">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f4f6fa">
+    <title>残高管理アプリ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navigation.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-brand"><span class="brand-mark" aria-hidden="true">¥</span><h1>残高管理アプリ</h1></div>
+    </header>
+    <main class="app-main">
+        <section id="calendar-page" class="app-page" aria-labelledby="calendar-heading">
+            <div class="page-heading">
+                <div><p class="eyebrow">CALENDAR</p><h2 id="calendar-heading">カレンダー</h2></div>
             </div>
-
-            <div>
-                <label for="baseDateInput">基準日</label>
-                <input id="baseDateInput" type="date">
+            <div class="calendar-layout">
+                <section class="card calendar-card" aria-label="日付の選択"><div id="calendar"></div></section>
+                <div class="selected-day-panel">
+                    <section class="card calculator-card" aria-labelledby="selected-date-heading">
+                        <h3 id="selected-date-heading">指定日の残高</h3>
+                        <p class="balance-caption">予想残高</p>
+                        <p class="calculated-balance" aria-live="polite"><span id="calculatedBalanceDisplay">未設定</span></p>
+                    </section>
+                </div>
             </div>
-
-            <button id="saveButton">保存</button>
         </section>
-
-        <section class="card balance-card">
-            <h2>保存した内容</h2>
-
-            <p class="balance-value"><span class="balance-label">現在の残高</span><span id="balanceDisplay">未設定</span></p>
-            <p class="base-date">基準日：<span id="baseDateDisplay">未設定</span></p>
-        </section>
-
-        <section class="card calculator-card">
-            <h2>指定日残高の計算</h2>
-            <p class="calculated-balance">指定日時点の残高：<span id="calculatedBalanceDisplay">未設定</span></p>
-        </section>
-
-        <section class="card transaction-form-card">
-            <h2>収支の登録</h2>
-
-            <div>
-                <label for="transactionType">種別</label>
-                <select id="transactionType">
-                    <option value="income">収入</option>
-                    <option value="expense">支出</option>
-                </select>
+        <section id="transactions-page" class="app-page" aria-labelledby="transactions-heading" hidden>
+            <div class="page-heading">
+                <div><p class="eyebrow">TRANSACTIONS</p><h2 id="transactions-heading">収支管理</h2></div>
             </div>
-
-            <div>
-                <label for="transactionDate">日付</label>
-                <input id="transactionDate" type="date">
+            <div class="management-layout">
+                <section class="card transaction-form-card" aria-labelledby="transaction-form-heading">
+                    <h3 id="transaction-form-heading">収支を追加</h3>
+                    <div class="form-fields">
+                        <div><label for="transactionType">種別</label><select id="transactionType"><option value="income">収入</option><option value="expense">支出</option></select></div>
+                        <div><label for="transactionDate">日付</label><input id="transactionDate" type="date"></div>
+                        <div><label for="transactionAmount">金額 <span class="field-unit">円</span></label><input id="transactionAmount" type="number" inputmode="decimal" placeholder="例：3000"></div>
+                        <div><label for="transactionMemo">メモ</label><input id="transactionMemo" type="text" placeholder="例：給料、食費"></div>
+                    </div>
+                    <button type="button" id="addTransactionButton" class="primary-button">収支を追加する</button>
+                </section>
+                <section class="card transaction-list-card" aria-labelledby="transaction-list-heading">
+                    <div class="card-heading"><h3 id="transaction-list-heading">収支一覧</h3></div>
+                    <ul id="transactionList" class="transaction-list" aria-label="登録済みの収支"></ul>
+                </section>
             </div>
-
-            <div>
-                <label for="transactionAmount">金額</label>
-                <input id="transactionAmount" type="number">
-            </div>
-
-            <div>
-                <label for="transactionMemo">メモ</label>
-                <input id="transactionMemo" type="text">
-            </div>
-
-            <button id="addTransactionButton">追加</button>
         </section>
-
-        <section class="card transaction-list-card">
-            <h2>収支一覧</h2>
-            <ul id="transactionList"></ul>
+        <section id="settings-page" class="app-page" aria-labelledby="settings-heading" hidden>
+            <div class="page-heading">
+                <div><p class="eyebrow">SETTINGS</p><h2 id="settings-heading">設定</h2></div>
+            </div>
+            <div class="settings-layout">
+                <section class="card settings-card" aria-labelledby="base-info-heading">
+                    <h3 id="base-info-heading">基準情報の設定</h3>
+                    <p class="helper-text">基準日と、その日時点の残高を入力してください。</p>
+                    <div class="form-fields">
+                        <div><label for="balanceInput">基準残高 <span class="field-unit">円</span></label><input id="balanceInput" type="number" inputmode="decimal" placeholder="例：10000"></div>
+                        <div><label for="baseDateInput">基準日</label><input id="baseDateInput" type="date"></div>
+                    </div>
+                    <button type="button" id="saveButton" class="primary-button">基準情報を保存する</button>
+                </section>
+                <section class="card balance-card" aria-labelledby="saved-info-heading">
+                    <p class="eyebrow">計算の基準</p><h3 id="saved-info-heading">保存した内容</h3>
+                    <p class="balance-caption">基準残高（円）</p>
+                    <p class="balance-value"><span id="balanceDisplay">未設定</span></p>
+                    <p class="base-date">基準日：<span id="baseDateDisplay">未設定</span></p>
+                </section>
+            </div>
         </section>
-
-        <script type="module" src="js/index.js"></script>
-    </body>
+    </main>
+    <nav class="bottom-nav" aria-label="メインナビゲーション">
+        <button type="button" data-page="calendar-page" aria-controls="calendar-page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2m-8 3h2"/></svg><span>カレンダー</span>
+        </button>
+        <button type="button" data-page="transactions-page" aria-controls="transactions-page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4"/></svg><span>収支管理</span>
+        </button>
+        <button type="button" data-page="settings-page" aria-controls="settings-page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="currentColor"/><circle cx="16" cy="12" r="2" fill="currentColor"/><circle cx="10" cy="18" r="2" fill="currentColor"/></svg><span>設定</span>
+        </button>
+    </nav>
+    <script type="module" src="js/index.js"></script>
+    <script type="module" src="js/calendar.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+</body>
 </html>
