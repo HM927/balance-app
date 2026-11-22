@@ -1,5 +1,5 @@
-import {loadBaseInfo, saveBaseInfo, loadTransactions, saveTransactions} from "./storage.js";
-import {sortTransactionsByDate, deleteTransaction} from "./transactions.js";
+import {loadBaseInfo, saveBaseInfo} from "./storage.js";
+import {sortTransactionsByDate} from "./transactions.js";
 import { createTransactionListItem } from "./view.js";
 
 const balanceInput = document.getElementById("balanceInput");
@@ -16,6 +16,8 @@ const transactionMemo = document.getElementById("transactionMemo");
 const addTransactionButton = document.getElementById("addTransactionButton");
 const transactionList = document.getElementById("transactionList");
 
+import { fetchTransactions, addTransaction, deleteTransaction } from "./api.js";
+
 function getBaseInfo() {
     return {
         balance: balanceInput.value,
@@ -31,7 +33,6 @@ function showBaseInfo(baseInfo) {
 // 収支情報
 function getTransaction() {
     return {
-        id: Date.now(),
         type: transactionType.value,
         date: transactionDate.value,
         amount: Number(transactionAmount.value),
@@ -56,8 +57,10 @@ function createDeleteButton(id) {
     deleteButton.textContent = "削除";
     deleteButton.classList.add("delete-button");
 
-    deleteButton.addEventListener("click", () => {
-        const transactions = deleteTransaction(id);
+    deleteButton.addEventListener("click", async () => {
+        await deleteTransaction(id);
+
+        const transactions = await fetchTransactions();
         showTransactions(transactions);
     });
 
@@ -85,18 +88,16 @@ saveButton.addEventListener("click", () => {
     showBaseInfo(baseInfo);
 });
 
-addTransactionButton.addEventListener("click", () => {
+addTransactionButton.addEventListener("click", async () => {
     const transaction = getTransaction();
 
     if (transaction.date === "" || transaction.amount === 0 || transaction.memo === "") {
         return;
     }
 
-    const transactions = loadTransactions();
+    await addTransaction(transaction);
 
-    transactions.push(transaction);
-
-    saveTransactions(transactions);
+    const transactions = await fetchTransactions();
     showTransactions(transactions);
 });
 
@@ -106,6 +107,6 @@ if (savedBaseInfo !== null) {
     showBaseInfo(savedBaseInfo);
 }
 
-const savedTransactions = loadTransactions();
+const savedTransactions = await fetchTransactions();
 
 showTransactions(savedTransactions);

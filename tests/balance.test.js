@@ -1,8 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {calculateBalance} from "../frontend/js/balance.js";
-import {deleteTransaction} from "../frontend/js/transactions.js";
-import {saveTransactions} from "../frontend/js/storage.js";
 
 //残高計算
 test("収入のみ", () => {

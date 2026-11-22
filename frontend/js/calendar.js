@@ -9,9 +9,10 @@ import 'fullcalendar/themes/monarch/theme.css'; // YOUR THEME
 import 'fullcalendar/themes/monarch/palettes/purple.css'; // YOUR THEME'S PALETTE
 
 import { calculateBalance } from './balance.js';
-import { loadBaseInfo, loadTransactions } from './storage';
+import { loadBaseInfo } from './storage.js';
 import { showCalculatedBalance, showSelectedTransactions } from './view.js';
 import { getTransactionsByDate } from './transactions.js';
+import { fetchTransactions } from './api.js';
 
 const calendarEl = document.getElementById('calendar');
 
@@ -24,7 +25,7 @@ const calendar = new Calendar(calendarEl, {
     center: 'title',
     right: 'dayGridMonth'
   },
-  dateClick: function(info) {
+  dateClick: async function(info) {
     if (prevdayEl !== null) {
         prevdayEl.style.backgroundColor = '';
     }
@@ -39,7 +40,7 @@ const calendar = new Calendar(calendarEl, {
         return;
     }
 
-    const transactions = loadTransactions();
+    const transactions = await fetchTransactions();
     const targetDate = info.dateStr;
 
     const balance = calculateBalance(
@@ -50,7 +51,7 @@ const calendar = new Calendar(calendarEl, {
 
     showCalculatedBalance(balance);
 
-    const selectedTransactions = getTransactionsByDate(transactions,info.dateStr);
+    const selectedTransactions = getTransactionsByDate(transactions, info.dateStr);
 
     showSelectedTransactions(selectedTransactions);
   }
