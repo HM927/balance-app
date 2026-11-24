@@ -1,6 +1,6 @@
-import {loadBaseInfo, saveBaseInfo} from "./storage.js";
 import {sortTransactionsByDate} from "./transactions.js";
 import { createTransactionListItem } from "./view.js";
+import { fetchTransactions, addTransaction, deleteTransaction, fetchBaseInfo, saveBaseInfo } from "./api.js";
 
 const balanceInput = document.getElementById("balanceInput");
 const baseDateInput = document.getElementById("baseDateInput");
@@ -16,11 +16,9 @@ const transactionMemo = document.getElementById("transactionMemo");
 const addTransactionButton = document.getElementById("addTransactionButton");
 const transactionList = document.getElementById("transactionList");
 
-import { fetchTransactions, addTransaction, deleteTransaction } from "./api.js";
-
 function getBaseInfo() {
     return {
-        balance: balanceInput.value,
+        balance: Number(balanceInput.value),
         baseDate: baseDateInput.value
     };
 }
@@ -77,15 +75,19 @@ function createDeletableTransactionListItem(transaction) {
     return listItem;
 }
 
-saveButton.addEventListener("click", () => {
-    const baseInfo = getBaseInfo();
-
-    if (baseInfo.balance === "" || baseInfo.baseDate === "") {
+saveButton.addEventListener("click", async () => {
+    if (balanceInput.value === "" || baseDateInput.value === "") {
         return;
     }
     
-    saveBaseInfo(baseInfo);
-    showBaseInfo(baseInfo);
+    const baseInfo = getBaseInfo();
+    await saveBaseInfo(baseInfo);
+
+    const savedBaseInfo = await fetchBaseInfo();
+
+    if(savedBaseInfo !== null) {
+        showBaseInfo(savedBaseInfo);
+    }
 });
 
 addTransactionButton.addEventListener("click", async () => {
@@ -101,7 +103,7 @@ addTransactionButton.addEventListener("click", async () => {
     showTransactions(transactions);
 });
 
-const savedBaseInfo = loadBaseInfo();
+const savedBaseInfo = await fetchBaseInfo();
 
 if (savedBaseInfo !== null) {
     showBaseInfo(savedBaseInfo);

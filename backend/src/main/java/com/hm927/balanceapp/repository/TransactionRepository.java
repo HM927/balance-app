@@ -19,7 +19,7 @@ public class TransactionRepository {
 
     public List<Transaction> findAll() {
         String sql = """
-        SELECT *
+        SELECT id, type, amount, transaction_date, memo
         FROM transactions
         ORDER BY transaction_date, id
         """;

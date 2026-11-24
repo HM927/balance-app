@@ -9,10 +9,9 @@ import 'fullcalendar/themes/monarch/theme.css'; // YOUR THEME
 import 'fullcalendar/themes/monarch/palettes/purple.css'; // YOUR THEME'S PALETTE
 
 import { calculateBalance } from './balance.js';
-import { loadBaseInfo } from './storage.js';
 import { showCalculatedBalance, showSelectedTransactions } from './view.js';
 import { getTransactionsByDate } from './transactions.js';
-import { fetchTransactions } from './api.js';
+import { fetchBaseInfo, fetchTransactions } from './api.js';
 
 const calendarEl = document.getElementById('calendar');
 
@@ -34,7 +33,7 @@ const calendar = new Calendar(calendarEl, {
     
     prevdayEl = info.dayEl;
 
-    const baseInfo = loadBaseInfo();
+    const baseInfo = await fetchBaseInfo();
 
     if (baseInfo === null) {
         return;
