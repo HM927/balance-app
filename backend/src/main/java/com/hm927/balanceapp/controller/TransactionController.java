@@ -15,38 +15,33 @@ import java.util.ArrayList;
 
 import com.hm927.balanceapp.model.Transaction;
 import com.hm927.balanceapp.model.TransactionRequest;
+import com.hm927.balanceapp.repository.TransactionRepository;
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class TransactionController {
-    private final List<Transaction> transactions = new ArrayList<>();
+    private final TransactionRepository transactionRepository;
 
-    private final AtomicLong nextId = new AtomicLong(1);
+    public TransactionController(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
 	@GetMapping("/transactions")
 	public List<Transaction> getTransactions() {
-		return List.copyOf(transactions);
+		return transactionRepository.findAll();
 	}
 
     @PostMapping("/transactions")
     public void addTransaction(@RequestBody TransactionRequest request) {
-        Transaction transaction = new Transaction(
-            nextId.getAndIncrement(),
-            request.type(),
-            request.amount(),
-            request.date(),
-            request.memo()
-        );
-
-        transactions.add(transaction);
+        transactionRepository.insert(request);
     }
 
     @DeleteMapping("/transactions/{id}")
     public ResponseEntity<Void> deleteTransaction(@PathVariable("id") long id) {
-        boolean wasDeleted = transactions.removeIf(transaction -> transaction.id() == id);
+        int deletedcount = transactionRepository.deleteByID(id);
 
-    if (!wasDeleted) {
+    if (deletedcount == 0) {
         return ResponseEntity.notFound().build();
     }
 
