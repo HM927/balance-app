@@ -1,4 +1,4 @@
-import {test, expect} from "@playwright/test";
+import {test, expect} from "./fixtures.js";
 
 test("日付未入力時", async ({page}) => {
     await page.goto("http://localhost:5173");

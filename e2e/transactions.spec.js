@@ -1,4 +1,4 @@
-import {test, expect} from "@playwright/test";
+import {test, expect} from "./fixtures.js";
 
 test("複数保存でき、削除ができる", async ({page}) => {
 await page.clock.install({
@@ -13,6 +13,7 @@ await nav.getByRole("button", { name: "設定", exact: true }).click();
 await page.locator("#balanceInput").fill("10000");
 await page.locator("#baseDateInput").fill("2026-11-10");
 await page.locator("#saveButton").click();
+await expect(page.locator("#baseDateDisplay")).toHaveText("2026-11-10");
 
 await nav.getByRole("button", { name: "収支管理", exact: true }).click();
 
@@ -21,12 +22,14 @@ await page.locator("#transactionDate").fill("2026-11-11");
 await page.locator("#transactionAmount").fill("3000");
 await page.locator("#transactionMemo").fill("給料");
 await page.locator("#addTransactionButton").click();
+await expect(page.locator("#transactionCount")).toHaveText("1件");
 
 await page.locator("#transactionType").selectOption("expense");
 await page.locator("#transactionDate").fill("2026-11-12");
 await page.locator("#transactionAmount").fill("2000");
 await page.locator("#transactionMemo").fill("食費");
 await page.locator("#addTransactionButton").click();
+await expect(page.locator("#transactionCount")).toHaveText("2件");
 
 await nav.getByRole("button", { name: "カレンダー", exact: true }).click();
 
@@ -54,6 +57,7 @@ await expect(list.locator(".transaction-amount")).toHaveText(["3000円", "2000�
 await expect(list.locator(".transaction-memo")).toHaveText(["給料", "食費"]);
 
 await list.locator("li").first().locator(".delete-button").click();
+await expect(list.locator("li")).toHaveCount(1);
 
 await nav.getByRole("button", { name: "カレンダー", exact: true }).click();
 
@@ -79,6 +83,7 @@ await expect(list.locator(".transaction-amount")).toHaveText(["2000円"]);
 await expect(list.locator(".transaction-memo")).toHaveText(["食費"]);
 
 await list.locator("li").first().locator(".delete-button").click();
+await expect(list.locator("li")).toHaveCount(0);
 
 await nav.getByRole("button", { name: "カレンダー", exact: true }).click();
 

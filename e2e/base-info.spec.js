@@ -1,4 +1,4 @@
-import {test, expect} from "@playwright/test";
+import {test, expect} from "./fixtures.js";
 
 test("基準情報を保存・更新でき、再読み込み後も残る", async ({page}) => {
     await page.goto("http://localhost:5173");
