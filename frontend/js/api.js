@@ -1,5 +1,15 @@
-export async function fetchTransactions() {
-    const response = await fetch("http://localhost:8080/transactions");
+export async function fetchTransactions(conditions = {}) {
+    const params = new URLSearchParams();
+
+    if (conditions.type) {
+        params.set("type", conditions.type);
+    }
+
+    if (conditions.keyword) {
+        params.set("keyword", conditions.keyword);
+    }
+
+    const response = await fetch(`http://localhost:8080/transactions?${params.toString()}`);
 
     if (!response.ok) {
         throw new Error("収支の取得に失敗しました");

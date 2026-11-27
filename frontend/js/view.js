@@ -49,3 +49,30 @@ export function showSelectedTransactions(transactions) {
             list.appendChild(listItem);
         });
 }
+
+export function showTransactions(transactions, onDelete) {
+    const list = document.getElementById("transactionList");
+    const count = document.getElementById("transactionCount");
+    const emptyMessage = document.getElementById("transactionEmptyMessage");
+
+    list.replaceChildren();
+
+    transactions.forEach(transaction => {
+        const listItem = createTransactionListItem(transaction);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "削除";
+        deleteButton.classList.add("delete-button");
+
+        deleteButton.addEventListener("click", async () => {
+            await onDelete(transaction.id);
+        });
+
+        listItem.appendChild(deleteButton);
+        list.appendChild(listItem);
+    });
+
+    count.textContent = `${transactions.length}件`;
+    emptyMessage.hidden = transactions.length !== 0;
+}

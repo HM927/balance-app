@@ -1,6 +1,5 @@
-import {sortTransactionsByDate} from "./transactions.js";
-import { createTransactionListItem } from "./view.js";
-import { fetchTransactions, addTransaction, deleteTransaction, fetchBaseInfo, saveBaseInfo } from "./api.js";
+import { refreshTransactionList, initTransactionList } from "./transaction-list.js";
+import { addTransaction, fetchBaseInfo, saveBaseInfo } from "./api.js";
 
 const balanceInput = document.getElementById("balanceInput");
 const baseDateInput = document.getElementById("baseDateInput");
@@ -38,42 +37,6 @@ function getTransaction() {
     };
 }
 
-function showTransactions(transactions) {
-    transactionList.innerHTML = "";
-
-    const sortedTransactions = sortTransactionsByDate(transactions);
-
-    sortedTransactions.forEach((transaction) => {
-        const listItem = createDeletableTransactionListItem(transaction);
-
-        transactionList.appendChild(listItem);
-    });
-}
-
-function createDeleteButton(id) {
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "削除";
-    deleteButton.classList.add("delete-button");
-
-    deleteButton.addEventListener("click", async () => {
-        await deleteTransaction(id);
-
-        const transactions = await fetchTransactions();
-        showTransactions(transactions);
-    });
-
-    return deleteButton;
-}
-
-function createDeletableTransactionListItem(transaction) {
-    const listItem = createTransactionListItem(transaction);
-    
-    const deleteButton = createDeleteButton(transaction.id);
-
-    listItem.appendChild(deleteButton);
-
-    return listItem;
-}
 
 saveButton.addEventListener("click", async () => {
     if (balanceInput.value === "" || baseDateInput.value === "") {
@@ -98,9 +61,7 @@ addTransactionButton.addEventListener("click", async () => {
     }
 
     await addTransaction(transaction);
-
-    const transactions = await fetchTransactions();
-    showTransactions(transactions);
+    await refreshTransactionList();
 });
 
 const savedBaseInfo = await fetchBaseInfo();
@@ -109,6 +70,4 @@ if (savedBaseInfo !== null) {
     showBaseInfo(savedBaseInfo);
 }
 
-const savedTransactions = await fetchTransactions();
-
-showTransactions(savedTransactions);
+await initTransactionList()

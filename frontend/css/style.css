@@ -66,6 +66,57 @@ h3 { font-size: 1.05rem; margin-bottom: 20px; }
   overflow: hidden;
 }
 .management-layout .card-heading { flex-shrink: 0; }
+.transaction-type-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  flex-shrink: 0;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #f4f6fa;
+}
+.transaction-type-tabs button {
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--subtext);
+  font-size: .85rem;
+  font-weight: 600;
+}
+.transaction-type-tabs button:hover { background: #e9edfa; color: var(--primary-dark); }
+.transaction-type-tabs button[aria-pressed="true"] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 6px #4f68e826;
+}
+.transaction-type-tabs button[aria-pressed="true"]:hover { background: var(--primary-dark); }
+.transaction-search-controls {
+  display: grid;
+  flex-shrink: 0;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.transaction-search-controls > div { min-width: 0; }
+.transaction-search-controls label { margin-bottom: 4px; font-size: .75rem; }
+.transaction-search-controls input { background: #fafbfe; }
+.transaction-search-controls input:focus { background: #fff; border-color: var(--primary); }
+#transactionCount {
+  min-height: 1.6em;
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--subtext);
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+#transactionEmptyMessage { margin-bottom: 12px; padding: 22px 12px; }
 .management-layout .transaction-list {
   flex: 1;
   min-height: 0;
@@ -126,7 +177,6 @@ input::placeholder { color: #929caf; }
 .card-heading h3 { margin: 0; }
 .count-badge { background: #f0f3f9; color: var(--subtext); padding: 3px 10px; font-size: .75rem; border-radius: 99px; white-space: nowrap; }
 .transaction-list { list-style: none; margin: 0; padding: 0; max-height: 400px; overflow-y: auto;}
-#transactionList:empty::before { display: block; padding: 28px 12px; border-radius: 12px; background: #f8f9fc; color: var(--subtext); font-size: .85rem; text-align: center; content: "収支はまだ登録されていません"; }
 .empty-state { margin: 0; padding: 28px 12px; color: var(--subtext); font-size: .85rem; line-height: 1.9; text-align: center; border-radius: 12px; background: #f8f9fc; }
 .transaction-item { display: flex; align-items: center; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border); }
 .transaction-item:last-child { border: 0; padding-bottom: 4px; }

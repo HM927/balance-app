@@ -25,7 +25,7 @@
                         <p class="balance-caption">予想残高</p>
                         <p class="calculated-balance" aria-live="polite"><span id="calculatedBalanceDisplay">未設定</span></p>
                     </section>
-                    <section class="card transaction-list-card" aria-labelledby="transaction-list-heading">
+                    <section class="card transaction-list-card" aria-labelledby="selected-date-transaction-list-heading">
                     <div class="card-heading"><h3 id="selected-date-transaction-list-heading">収支一覧</h3></div>
                     <ul id="selected-date-transactionList" class="transaction-list" aria-label="登録済みの収支"></ul>
                 </section>
@@ -47,9 +47,34 @@
                     </div>
                     <button type="button" id="addTransactionButton" class="primary-button">収支を追加する</button>
                 </section>
+
                 <section class="card transaction-list-card" aria-labelledby="transaction-list-heading">
                     <div class="card-heading"><h3 id="transaction-list-heading">収支一覧</h3></div>
-                    <ul id="transactionList" class="transaction-list" aria-label="登録済みの収支"></ul>
+                    <div class="transaction-type-tabs" role="group" aria-label="収支の種別">
+                        <button type="button" data-type="" aria-pressed="true">
+                            すべて
+                        </button>
+                        <button type="button" data-type="income" aria-pressed="false">
+                            収入
+                        </button>
+                        <button type="button" data-type="expense" aria-pressed="false">
+                            支出
+                        </button>
+                    </div>
+
+                    <div class="transaction-search-controls">
+                        <div>
+                            <label for="transactionKeyword">メモを検索</label>
+                            <input type="search" id="transactionKeyword" placeholder="例：給料、食費">
+                        </div>
+                        <p id="transactionCount" role="status"></p>
+                        <p id="transactionEmptyMessage" class="empty-state" hidden>条件に一致する収支はありません</p>
+                    </div>
+                    <ul
+                        id="transactionList"
+                        class="transaction-list"
+                        aria-label="検索結果の収支">
+                    </ul>
                 </section>
             </div>
         </section>
